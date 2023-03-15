@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddittdemo/core/common/sign_in_button.dart';
 import 'package:reddittdemo/core/constants/constants.dart';
-import 'package:reddittdemo/features/controller/AuthController.dart';
 
-import '../../core/common/loader.dart';
+import '../../../core/common/loader.dart';
+import '../controller/AuthController.dart';
+
+
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({Key? key}) : super(key: key);

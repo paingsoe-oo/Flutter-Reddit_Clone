@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reddittdemo/features/repository/auth_repository.dart';
+
+import '../../auth/repository/auth_repository.dart';
+import '../drawers/community_list_drawer.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  void displayDrawer(BuildContext context) {
+    Scaffold.of(context).openDrawer();
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,6 +36,7 @@ class HomeScreen extends ConsumerWidget {
           )
         ],
       ),
+      drawer: const CommunityListDrawer(),
     );
   }
 }

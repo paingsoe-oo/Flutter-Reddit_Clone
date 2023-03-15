@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reddittdemo/features/controller/AuthController.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:reddittdemo/features/repository/auth_repository.dart';
 import 'package:reddittdemo/router.dart';
 import 'package:routemaster/routemaster.dart';
 import 'core/common/error_text.dart';
 import 'core/common/loader.dart';
+import 'features/auth/controller/AuthController.dart';
+import 'features/auth/repository/auth_repository.dart';
 import 'features/models/user_model.dart';
 import 'firebase_options.dart';
 

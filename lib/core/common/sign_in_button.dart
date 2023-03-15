@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddittdemo/core/constants/constants.dart';
-import 'package:reddittdemo/features/controller/AuthController.dart';
+
+import '../../features/auth/controller/AuthController.dart';
 
 class SignInButton extends ConsumerWidget {
   const SignInButton({Key? key}) : super(key: key);
