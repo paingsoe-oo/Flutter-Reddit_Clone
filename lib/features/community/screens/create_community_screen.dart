@@ -53,22 +53,22 @@ class _CreateCommunityScreenState
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(18),
                 ),
-                maxLength: 25,
+                maxLength: 21,
               ),
               const SizedBox(
                 height: 30,
               ),
               ElevatedButton(
                 onPressed: createCommunity,
-                child: const Text(
-                  "Create Community",
-                  style: TextStyle(fontSize: 17),
-                ),
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     )),
+                child: const Text(
+                  "Create Community",
+                  style: TextStyle(fontSize: 17),
+                ),
               )
             ],
           ),

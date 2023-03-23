@@ -15,35 +15,44 @@ final communityRepositoryProvider = Provider((ref) {
 class CommunityRepository {
   final FirebaseFirestore _firestore;
 
-  CommunityRepository({required FirebaseFirestore firestore}) : _firestore = firestore;
+  CommunityRepository({required FirebaseFirestore firestore})
+      : _firestore = firestore;
 
   FutureVoid createCommunity(Community community) async {
     try {
       var communityDoc = await _communities.doc(community.name).get();
 
-      if(communityDoc.exists) {
+      if (communityDoc.exists) {
         throw 'Community with the same name already exists!';
       }
 
-      return right(await _communities.doc(community.name).set(community.toMap()));
-
-    } on FirebaseException catch(e) {
+      return right(
+          await _communities.doc(community.name).set(community.toMap()));
+    } on FirebaseException catch (e) {
       return left(Failure(e.message!));
     } catch (e) {
       return left(Failure(e.toString()));
     }
   }
 
-  CollectionReference get _communities => _firestore.collection(FirebaseConstants.communitiesCollections);
+  Stream<Community> getCommunityByName(String name) {
+    return _communities.doc(name).snapshots().map(
+        (event) => Community.fromMap(event.data() as Map<String, dynamic>));
+  }
+
+  CollectionReference get _communities =>
+      _firestore.collection(FirebaseConstants.communitiesCollections);
 
   Stream<List<Community>> getUserCommunities(String uid) {
-    return _communities.where('members', arrayContains: uid).snapshots()
-      .map((event) {
-        List<Community> communities = [];
-        for(var doc in event.docs) {
-          communities.add(Community.fromMap(doc.data() as Map<String, dynamic>));
-        }
-        return communities;
+    return _communities
+        .where('members', arrayContains: uid)
+        .snapshots()
+        .map((event) {
+      List<Community> communities = [];
+      for (var doc in event.docs) {
+        communities.add(Community.fromMap(doc.data() as Map<String, dynamic>));
+      }
+      return communities;
     });
   }
 }

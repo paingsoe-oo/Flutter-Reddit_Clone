@@ -10,8 +10,9 @@ import 'package:reddittdemo/core/providers/firebase_providers.dart';
 import 'package:reddittdemo/core/type_defs.dart';
 import 'package:reddittdemo/features/models/user_model.dart';
 
-final userProvider = StateProvider<UserModel?>((ref) => null);
+// final userProvider = StateProvider<UserModel?>((ref) => null);
 
+//auth repo
 final authRepositoryProvider = Provider((ref) =>
   AuthRepository(
       firestore: ref.read(firestoreProvider),
@@ -33,7 +34,7 @@ class AuthRepository {
 
   Stream<User?> get authStateChange => _auth.authStateChanges();
 
-  FutureEither<UserModel> signInWithGoogle() async {
+  FutureEither<UserModel> signInWithGoogleTwo() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
@@ -47,25 +48,24 @@ class AuthRepository {
       UserCredential userCredential = await _auth.signInWithCredential(
           credential);
 
-      UserModel userModel;
-      if (userCredential.additionalUserInfo!.isNewUser) {
+      late UserModel userModel;
+      if (userCredential.additionalUserInfo!.isNewUser == false) {
         userModel = UserModel(
-            name: userCredential.user?.displayName ?? 'No Name',
-            profilePic: userCredential.user?.photoURL ?? Constants.logoPath,
+            name: userCredential.user!.displayName ?? 'No Name',
+            profilePic: userCredential.user!.photoURL ?? Constants.logoPath,
             banner: Constants.logoPath,
             uid: userCredential.user!.uid,
-            isAuthenticated: true,
-            karma: 0,
-            awards: []
+            isAuthenticated: true
+            // karma: 0,
+            // awards: []
         );
-
-        await _users.doc(userCredential.user!.uid).set({
+        await _users.doc(userCredential.user!.uid).set(
           userModel.toMap()
-        });
+        );
       } else {
         userModel = await getUserData(userCredential.user!.uid).first;
       }
-
+      print(userModel.name);
       return right(userModel);
     } on FirebaseException catch(e) {
       throw e.message!;

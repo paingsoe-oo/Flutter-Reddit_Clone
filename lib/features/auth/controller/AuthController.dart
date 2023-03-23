@@ -5,26 +5,25 @@ import '../../../core/utils.dart';
 import '../../models/user_model.dart';
 import '../repository/auth_repository.dart';
 
+final userProvider = StateProvider<UserModel?>((ref) => null);
 
-// Provider
-final authControllerProvider = StateNotifierProvider<AuthController, bool>((ref) =>
-  AuthController(
-    authRepository: ref.watch(authRepositoryProvider), //Instance ref
-    ref: ref
-  )
-);
+// auth controller
+final authControllerProvider =
+    StateNotifierProvider<AuthController, bool>((ref) => AuthController(
+        authRepository: ref.watch(authRepositoryProvider), //Instance ref
+        ref: ref));
 
 final authStateChangeProvider = StreamProvider((ref) {
   final authController = ref.watch(authControllerProvider.notifier);
   return authController.authStateChange;
 });
 
-final getUserDataProvider = StreamProvider.family((ref, String uid)  {
+final getUserDataProvider = StreamProvider.family((ref, String uid) {
   final authController = ref.watch(authControllerProvider.notifier);
   return authController.getUserData(uid);
 });
 
-class AuthController extends StateNotifier<bool>{
+class AuthController extends StateNotifier<bool> {
   final AuthRepository _authRepository;
   final Ref _ref;
 
@@ -37,14 +36,13 @@ class AuthController extends StateNotifier<bool>{
 
   void signWithGoogle(BuildContext context) async {
     state = true;
-    final user = await _authRepository.signInWithGoogle();
+    final user = await _authRepository.signInWithGoogleTwo();
     state = false;
+
     user.fold(
-            (l) => showSnackBar(context, l.message),
-            (userModel) => _ref.read(userProvider.notifier).update(
-                (state) => userModel
-            )
-    );
+        (error) => showSnackBar(context, error.message),
+        (userModel) =>
+            _ref.read(userProvider.notifier).update((state) => userModel));
   }
 
   Stream<UserModel> getUserData(String uid) {

@@ -19,12 +19,12 @@ class CommunityListDrawer extends ConsumerWidget {
         child: Column(
           children: [
             ListTile(
-              title: Text('Create a community'),
-              leading: Icon(Icons.add),
+              title: const Text('Create a community'),
+              leading: const Icon(Icons.add),
               onTap: () => navigateToCreateCommunity(context),
             ),
             ref.watch(userCommunitiesProvider).when(
-                  data: (communities) => Expanded(
+                  data: (communities) => Expanded( 
                     child: ListView.builder(
                       itemCount: communities.length,
                       itemBuilder: (BuildContext context, int index) {

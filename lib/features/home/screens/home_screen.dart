@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../auth/repository/auth_repository.dart';
+import '../../auth/controller/AuthController.dart';
 import '../drawers/community_list_drawer.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -22,21 +22,24 @@ class HomeScreen extends ConsumerWidget {
         centerTitle: false,
         leading: IconButton(
           icon: const Icon(Icons.menu),
-          onPressed: () {},
+          onPressed: () => displayDrawer(context),
         ),
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-          IconButton(
-            icon: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  user.profilePic
-              ),
-            ),
-            onPressed: () {},
-          )
-        ],
+        // actions: [
+        //   IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+        //   IconButton(
+        //     icon: CircleAvatar(
+        //       backgroundImage: NetworkImage(
+        //           user.profilePic
+        //       ),
+        //     ),
+        //     onPressed: () {},
+        //   )
+        // ],
       ),
-      drawer: const CommunityListDrawer(),
+      body: Center(
+        child: Text(user.name.toString()),
+      )
+      // drawer: const CommunityListDrawer(),
     );
   }
 }
