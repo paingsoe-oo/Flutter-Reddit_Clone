@@ -3,8 +3,8 @@ class Community {
   final String name;
   final String banner;
   final String avatar;
-  final List<String> members;
-  final List<String> mods;
+  final List members;
+  final List mods;
 
   const Community({
     required this.id,
@@ -35,12 +35,12 @@ class Community {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': this.id,
-      'name': this.name,
-      'banner': this.banner,
-      'avatar': this.avatar,
-      'members': this.members,
-      'mods': this.mods,
+      'id': id,
+      'name': name,
+      'banner': banner,
+      'avatar': avatar,
+      'members': members,
+      'mods': mods,
     };
   }
 
@@ -48,12 +48,12 @@ class Community {
 
   factory Community.fromMap(Map<String, dynamic> map) {
     return Community(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      banner: map['banner'] as String,
-      avatar: map['avatar'] as String,
-      members: map['members'] as List<String>,
-      mods: map['mods'] as List<String>,
+      id: map['id'],
+      name: map['name'],
+      banner: map['banner'],
+      avatar: map['avatar'],
+      members: map['members'],
+      mods: map['mods'],
     );
   }
 }

@@ -20,26 +20,30 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text("Home"),
         centerTitle: false,
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () => displayDrawer(context),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () => displayDrawer(context),
+            );
+          }
         ),
-        // actions: [
-        //   IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-        //   IconButton(
-        //     icon: CircleAvatar(
-        //       backgroundImage: NetworkImage(
-        //           user.profilePic
-        //       ),
-        //     ),
-        //     onPressed: () {},
-        //   )
-        // ],
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+          IconButton(
+            icon: CircleAvatar(
+              backgroundImage: NetworkImage(
+                  user.profilePic
+              ),
+            ),
+            onPressed: () {},
+          )
+        ],
       ),
       body: Center(
         child: Text(user.name.toString()),
-      )
-      // drawer: const CommunityListDrawer(),
+      ),
+      drawer: const CommunityListDrawer(),
     );
   }
 }

@@ -27,7 +27,8 @@ class CommunityRepository {
       }
 
       return right(
-          await _communities.doc(community.name).set(community.toMap()));
+          await _communities.doc(community.name).set(community.toMap())
+      );
     } on FirebaseException catch (e) {
       return left(Failure(e.message!));
     } catch (e) {

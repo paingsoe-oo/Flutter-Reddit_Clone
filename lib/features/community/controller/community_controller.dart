@@ -22,7 +22,7 @@ final communityControllerProvider = StateNotifierProvider<CommunityController, b
       ref: ref);
 });
 
-final getCommunitybyNameProvider = StreamProvider.family((ref, String name) {
+final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
   return ref.watch(communityControllerProvider.notifier).getCommunitybyName(name);
 });
 
