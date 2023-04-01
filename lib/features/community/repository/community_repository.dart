@@ -44,6 +44,16 @@ class CommunityRepository {
   CollectionReference get _communities =>
       _firestore.collection(FirebaseConstants.communitiesCollections);
 
+  FutureVoid editCommunity(Community community) async {
+    try {
+      return right(_communities.doc(community.name).update(community.toMap()));
+    } on FirebaseException catch(e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
   Stream<List<Community>> getUserCommunities(String uid) {
     return _communities
         .where('members', arrayContains: uid)
