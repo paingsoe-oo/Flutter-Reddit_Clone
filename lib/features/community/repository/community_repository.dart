@@ -27,8 +27,7 @@ class CommunityRepository {
       }
 
       return right(
-          await _communities.doc(community.name).set(community.toMap())
-      );
+          await _communities.doc(community.name).set(community.toMap()));
     } on FirebaseException catch (e) {
       return left(Failure(e.message!));
     } catch (e) {
@@ -47,11 +46,32 @@ class CommunityRepository {
   FutureVoid editCommunity(Community community) async {
     try {
       return right(_communities.doc(community.name).update(community.toMap()));
-    } on FirebaseException catch(e) {
+    } on FirebaseException catch (e) {
       throw e.message!;
     } catch (e) {
       return left(Failure(e.toString()));
     }
+  }
+
+  Stream<List<Community>> searchCommunity(String query) {
+    return _communities
+        .where(
+          'name',
+          isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
+          isLessThan: query.isEmpty
+              ? null
+              : query.substring(0, query.length - 1) +
+                  String.fromCharCode(query.codeUnitAt(query.length - 1) + 1),
+        )
+        .snapshots()
+        .map((event) {
+      List<Community> communities = [];
+      for (var community in event.docs) {
+        communities
+            .add(Community.fromMap(community.data() as Map<String, dynamic>));
+      }
+      return communities;
+    });
   }
 
   Stream<List<Community>> getUserCommunities(String uid) {
