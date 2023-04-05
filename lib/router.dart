@@ -2,6 +2,7 @@
 //LoggedOut
 
 import 'package:flutter/material.dart';
+import 'package:reddittdemo/features/community/screens/add_mods_screen.dart';
 import 'package:reddittdemo/features/community/screens/community_screen.dart';
 import 'package:reddittdemo/features/community/screens/create_community_screen.dart';
 import 'package:reddittdemo/features/community/screens/edit_community_screen.dart';
@@ -27,6 +28,9 @@ final loggedInRoute = RouteMap(routes: {
     name: routeData.pathParameters['name']!,
   )),
   '/edit-community/:name': (routeData) => MaterialPage(child: EditCommunityScreen(
+    name: routeData.pathParameters['name']!,
+  )),
+  '/add-mods/:name': (routeData) => MaterialPage(child: AddModsScreen(
     name: routeData.pathParameters['name']!,
   )),
 });

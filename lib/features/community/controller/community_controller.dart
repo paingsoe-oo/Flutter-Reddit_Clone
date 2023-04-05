@@ -88,13 +88,12 @@ class CommunityController extends StateNotifier<bool> {
     }
 
     res.fold((l) => showSnackBar(context, l.message), (r) {
-        if(community.members.contains(user.uid)) {
-          showSnackBar(context, 'Community left successfully!');
-        } else {
-          showSnackBar(context, 'Community join successfully!');
-        }
+      if (community.members.contains(user.uid)) {
+        showSnackBar(context, 'Community left successfully!');
+      } else {
+        showSnackBar(context, 'Community join successfully!');
       }
-    );
+    });
   }
 
   Stream<List<Community>> getUserCommunities() {
@@ -136,5 +135,12 @@ class CommunityController extends StateNotifier<bool> {
 
   Stream<List<Community>> searchCommunity(String query) {
     return _communityRepository.searchCommunity(query);
+  }
+
+  void addMods(
+      String communityName, List<String> uids, BuildContext context) async {
+    final res = await _communityRepository.addMods(communityName, uids);
+    res.fold((l) => showSnackBar(context, l.message),
+        (r) => Routemaster.of(context).pop());
   }
 }
