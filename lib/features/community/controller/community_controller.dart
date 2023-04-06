@@ -91,7 +91,7 @@ class CommunityController extends StateNotifier<bool> {
       if (community.members.contains(user.uid)) {
         showSnackBar(context, 'Community left successfully!');
       } else {
-        showSnackBar(context, 'Community join successfully!');
+        showSnackBar(context, 'Community joined successfully!');
       }
     });
   }

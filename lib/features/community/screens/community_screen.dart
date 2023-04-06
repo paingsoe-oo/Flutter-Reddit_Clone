@@ -94,8 +94,8 @@ class CommunityScreen extends ConsumerWidget {
                                     onPressed: () => joinCommunity(ref, community, context),
                                     child: Text(
                                         community.members.contains(user.uid)
-                                            ? 'Join'
-                                            : 'Joined')),
+                                            ? 'Joined'
+                                            : 'Join')),
                           ],
                         ),
                         Padding(

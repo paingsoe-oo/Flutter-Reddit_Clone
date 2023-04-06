@@ -10,7 +10,7 @@ class ModToolsScreen extends StatelessWidget {
   }
 
   void navigateToAddMods(BuildContext context) {
-    Routemaster.of(context).push('add-mods/$name');
+    Routemaster.of(context).push('/add-mods/$name');
   }
 
   @override
