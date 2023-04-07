@@ -28,7 +28,7 @@ class CommunityScreen extends ConsumerWidget {
     return Scaffold(
       body: ref.watch(getCommunityByNameProvider(name)).when(
           data: (community) => NestedScrollView(
-              headerSliverBuilder: (context, innberBoxIsScrolled) {
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return [
                   SliverAppBar(
                     expandedHeight: 150,
