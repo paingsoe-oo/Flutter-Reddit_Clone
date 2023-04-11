@@ -7,6 +7,8 @@ import 'package:reddittdemo/core/common/error_text.dart';
 import 'package:reddittdemo/core/common/loader.dart';
 import 'package:reddittdemo/core/constants/constants.dart';
 import 'package:reddittdemo/core/utils.dart';
+import 'package:reddittdemo/features/user_profile/controller/user_profile_controller.dart';
+import 'package:reddittdemo/theme/palette.dart';
 
 import '../../models/community_model.dart';
 import '../controller/community_controller.dart';
@@ -24,6 +26,7 @@ class EditCommunityScreen extends ConsumerStatefulWidget {
 class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
   File? bannerFile;
   File? profileFile;
+  late TextEditingController nameController;
 
   void selectBannerImage() async {
     final res = await pickImage();
@@ -45,25 +48,29 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
     }
   }
 
-  void save(Community community) {
-    ref.read(communityControllerProvider.notifier).editCommunity(
+  void save() {
+    ref.read(userProfileControllerProvider.notifier).editCommunity(
         profileFile: profileFile,
         bannerFile: bannerFile,
         context: context,
-        community: community);
+        name: nameController.text.trim());
   }
 
   @override
   Widget build(BuildContext context) {
+
     final isLoading = ref.watch(communityControllerProvider);
+    final currentTheme = ref.watch(themeNotifierProvider);
+
     return ref.watch(getCommunityByNameProvider(widget.name)).when(
-          data: (community) => Scaffold(
+          data: (user) => Scaffold(
+            backgroundColor: currentTheme.backgroundColor,
               appBar: AppBar(
-                  title: const Text('Edit Community'),
+                  title: const Text('Edit Profile'),
                   centerTitle: false,
                   actions: [
                     TextButton(
-                      onPressed: () => save(community),
+                      onPressed: () => save(),
                       child: const Text('Save'),
                     )
                   ]),
@@ -84,6 +91,7 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
                                     borderType: BorderType.RRect,
                                     dashPattern: const [10, 4],
                                     strokeCap: StrokeCap.round,
+                                    color: currentTheme.textTheme.bodyText2!.color!,
                                     child: Container(
                                         width: double.infinity,
                                         height: 150,
@@ -93,8 +101,8 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
                                         ),
                                         child: bannerFile != null
                                             ? Image.file(bannerFile!)
-                                            : community.banner.isEmpty ||
-                                                    community.banner ==
+                                            : user.banner.isEmpty ||
+                                                    user.banner ==
                                                         Constants.logoPath
                                                 ? const Center(
                                                     child: Icon(
@@ -103,7 +111,7 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
                                                     ),
                                                   )
                                                 : Image.network(
-                                                    community.banner,
+                                                    user.banner,
                                                     scale: 1.0,
                                                   )),
                                   ),
@@ -121,7 +129,7 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
                                           )
                                         : CircleAvatar(
                                             backgroundImage:
-                                                NetworkImage(community.avatar),
+                                                NetworkImage(user.avatar),
                                             radius: 32,
                                           ),
                                   ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:reddittdemo/router.dart';
+import 'package:reddittdemo/theme/palette.dart';
 import 'package:routemaster/routemaster.dart';
 import 'core/common/error_text.dart';
 import 'core/common/loader.dart';
@@ -52,11 +53,9 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     return ref.watch(authStateChangeProvider).when(
         data: (data) => MaterialApp.router(
-              title: 'Flutter Demo',
+              title: 'Reddit Tutorial',
               debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                primarySwatch: Colors.brown,
-              ),
+              theme: ref.watch(themeNotifierProvider),
               // home: const LoginScreen(),
               routerDelegate: RoutemasterDelegate(
                 routesBuilder: (context) {
