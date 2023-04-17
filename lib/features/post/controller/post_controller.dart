@@ -23,6 +23,11 @@ StateNotifierProvider<PostController, bool>((ref) {
       storageRepository: storageRepository);
 });
 
+final userPostsProvider = StreamProvider.family((ref, List<Community> communities) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.fetchUserPosts(communities);
+});
+
 class PostController extends StateNotifier<bool> {
   final PostRepository _postRepository;
   final Ref _ref;
@@ -51,15 +56,16 @@ class PostController extends StateNotifier<bool> {
         title: title,
         communityName: selectedCommunity.name,
         communityProfilePic: selectedCommunity.avatar,
-        upvotes: [],
-        downvotes: [],
+        // upvotes: [],
+        //downvotes: [],
         commentCount: 0,
         username: user.name,
         description: description,
         uid: user.uid,
         type: 'text',
         createdAt: DateTime.now(),
-        awards: []);
+        awards: []
+        );
 
     final res = await _postRepository.addPost(post);
     state = false;
@@ -83,15 +89,16 @@ class PostController extends StateNotifier<bool> {
         title: title,
         communityName: selectedCommunity.name,
         communityProfilePic: selectedCommunity.avatar,
-        upvotes: [],
-        downvotes: [],
+        // upvotes: [],
+        //downvotes: [],
         commentCount: 0,
         username: user.name,
         link: link,
         uid: user.uid,
-        type: 'text',
+        type: 'link',
         createdAt: DateTime.now(),
-        awards: []);
+        awards: []
+    );
 
     final res = await _postRepository.addPost(post);
     state = false;
@@ -118,15 +125,16 @@ class PostController extends StateNotifier<bool> {
           title: title,
           communityName: selectedCommunity.name,
           communityProfilePic: selectedCommunity.avatar,
-          upvotes: [],
-          downvotes: [],
+          // upvotes: [],
+          //downvotes: [],
           commentCount: 0,
           username: user.name,
           link: r,
           uid: user.uid,
-          type: 'text',
+          type: 'image',
           createdAt: DateTime.now(),
-          awards: []);
+          awards: []
+      );
 
       final res = await _postRepository.addPost(post);
       state = false;
@@ -135,7 +143,13 @@ class PostController extends StateNotifier<bool> {
         Routemaster.of(context).pop();
       });
     });
+  }
 
+  Stream<List<Post>> fetchUserPosts(List<Community> communities) {
+    if(communities.isNotEmpty) {
+      return _postRepository.fetchUserPosts(communities);
+    }
 
+    return Stream.value([]);
   }
 }

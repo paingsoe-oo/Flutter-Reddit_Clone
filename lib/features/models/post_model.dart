@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Post {
   final String id;
   final String title;
@@ -5,14 +7,14 @@ class Post {
   final String? description;
   final String communityName;
   final String communityProfilePic;
-  final List<String> upvotes;
-  final List<String> downvotes;
+  // final List<String> upvotes;
+  //final List<String> downvotes;
   final int commentCount;
   final String username;
   final String uid;
   final String type;
   final DateTime createdAt;
-  final List<String> awards;
+  final List<dynamic> awards;
 
 //<editor-fold desc="Data Methods">
 
@@ -23,8 +25,8 @@ class Post {
     this.description,
     required this.communityName,
     required this.communityProfilePic,
-    required this.upvotes,
-    required this.downvotes,
+    // required this.upvotes,
+    // required this.downvotes,
     required this.commentCount,
     required this.username,
     required this.uid,
@@ -44,53 +46,17 @@ class Post {
           description == other.description &&
           communityName == other.communityName &&
           communityProfilePic == other.communityProfilePic &&
-          upvotes == other.upvotes &&
-          downvotes == other.downvotes &&
+          // upvotes == other.upvotes &&
+          // downvotes == other.downvotes &&
           commentCount == other.commentCount &&
           username == other.username &&
           uid == other.uid &&
           type == other.type &&
           createdAt == other.createdAt &&
-          awards == other.awards);
+          awards == other.awards
+          );
 
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      title.hashCode ^
-      link.hashCode ^
-      description.hashCode ^
-      communityName.hashCode ^
-      communityProfilePic.hashCode ^
-      upvotes.hashCode ^
-      downvotes.hashCode ^
-      commentCount.hashCode ^
-      username.hashCode ^
-      uid.hashCode ^
-      type.hashCode ^
-      createdAt.hashCode ^
-      awards.hashCode;
-
-  @override
-  String toString() {
-    return 'Post{' +
-        ' id: $id,' +
-        ' title: $title,' +
-        ' link: $link,' +
-        ' description: $description,' +
-        ' communityName: $communityName,' +
-        ' communityProfilePic: $communityProfilePic,' +
-        ' upvotes: $upvotes,' +
-        ' downvotes: $downvotes,' +
-        ' commentCount: $commentCount,' +
-        ' username: $username,' +
-        ' uid: $uid,' +
-        ' type: $type,' +
-        ' createdAt: $createdAt,' +
-        ' awards: $awards,' +
-        '}';
-  }
-
-  Post copyWith({
+  /*Post copyWith({
     String? id,
     String? title,
     String? link,
@@ -113,8 +79,8 @@ class Post {
       description: description ?? this.description,
       communityName: communityName ?? this.communityName,
       communityProfilePic: communityProfilePic ?? this.communityProfilePic,
-      upvotes: upvotes ?? this.upvotes,
-      downvotes: downvotes ?? this.downvotes,
+      // upvotes: upvotes ?? this.upvotes,
+      // downvotes: downvotes ?? this.downvotes,
       commentCount: commentCount ?? this.commentCount,
       username: username ?? this.username,
       uid: uid ?? this.uid,
@@ -122,24 +88,24 @@ class Post {
       createdAt: createdAt ?? this.createdAt,
       awards: awards ?? this.awards,
     );
-  }
+  }*/
 
   Map<String, dynamic> toMap() {
     return {
-      'id': this.id,
-      'title': this.title,
-      'link': this.link,
-      'description': this.description,
-      'communityName': this.communityName,
-      'communityProfilePic': this.communityProfilePic,
-      'upvotes': this.upvotes,
-      'downvotes': this.downvotes,
-      'commentCount': this.commentCount,
-      'username': this.username,
-      'uid': this.uid,
-      'type': this.type,
-      'createdAt': this.createdAt,
-      'awards': this.awards,
+      'id': id,
+      'title': title,
+      'link': link,
+      'description': description,
+      'communityName': communityName,
+      'communityProfilePic': communityProfilePic,
+      // 'upvotes': upvotes,
+      // 'downvotes': downvotes,
+      'commentCount': commentCount,
+      'username': username,
+      'uid': uid,
+      'type': type,
+      'createdAt': createdAt,
+      'awards': awards,
     };
   }
 
@@ -151,14 +117,14 @@ class Post {
       description: map['description'] as String,
       communityName: map['communityName'] as String,
       communityProfilePic: map['communityProfilePic'] as String,
-      upvotes: map['upvotes'] as List<String>,
-      downvotes: map['downvotes'] as List<String>,
+      // upvotes: map['upvotes'],
+      // downvotes: map['downvotes'] as List<String>,
       commentCount: map['commentCount'] as int,
       username: map['username'] as String,
       uid: map['uid'] as String,
       type: map['type'] as String,
-      createdAt: map['createdAt'] as DateTime,
-      awards: map['awards'] as List<String>,
+      createdAt: (map['createdAt'] as Timestamp).toDate(), // todo: cast error
+      awards: map['awards'],//todo: need fix list<dynamic> to list<string>
     );
   }
 
