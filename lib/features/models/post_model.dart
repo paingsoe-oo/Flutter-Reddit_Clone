@@ -125,6 +125,7 @@ class Post {
       type: map['type'] as String,
       createdAt: (map['createdAt'] as Timestamp).toDate(), // todo: cast error
       awards: map['awards'],//todo: need fix list<dynamic> to list<string>
+      //List<String>.from(map['awards'])
     );
   }
 

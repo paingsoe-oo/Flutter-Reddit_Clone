@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddittdemo/features/auth/controller/AuthController.dart';
+import 'package:reddittdemo/features/post/controller/post_controller.dart';
 import 'package:reddittdemo/theme/palette.dart';
 
 import '../../features/models/post_model.dart';
@@ -10,6 +12,10 @@ import '../../features/models/post_model.dart';
 class PostCard extends ConsumerWidget {
   final Post post;
   const PostCard({Key? key, required this.post}) : super(key: key);
+
+  void deletePost(WidgetRef ref, BuildContext context) async {
+    ref.read(postControllerProvider.notifier).deletePost(post, context);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,7 +82,7 @@ class PostCard extends ConsumerWidget {
                               ),
                               if (post.uid == user.uid)
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () => deletePost(ref, context),
                                   icon: Icon(
                                     Icons.delete,
                                     color: Pallete.redColor,
@@ -87,7 +93,7 @@ class PostCard extends ConsumerWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: 10.0),
                             child: Text(post.title,
-                                style: const  TextStyle(
+                                style: const TextStyle(
                                   fontSize: 19,
                                   fontWeight: FontWeight.bold,
                                 )),
@@ -96,8 +102,55 @@ class PostCard extends ConsumerWidget {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.35,
                               width: double.infinity,
-                              child: Image.network(post.link!, fit: BoxFit.cover),
-                            )
+                              child:
+                                  Image.network(post.link!, fit: BoxFit.cover),
+                            ),
+                          if (isTypeLink)
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.35,
+                              width: double.infinity,
+                              child: AnyLinkPreview(
+                                displayDirection:
+                                    UIDirection.uiDirectionHorizontal,
+                                link: 'post.link!',
+                              ),
+                            ),
+                          if (isTypeText)
+                            Container(
+                              alignment: Alignment.bottomLeft,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Text(post.description!,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                  )),
+                            ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.arrow_upward,
+                                        size: 30,
+                                      )
+                                  ),
+                                  // Text('${post.upvotes.length - post.downvotes.length == 0
+                                  //     ? 'Vote'
+                                  //     : post.upvotes.length - post.downvotes.length}'),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.arrow_downward,
+                                        size: 30,
+                                      )
+                                  ),
+                                ],
+                              ),
+
+                            ],
+                          )
                         ],
                       ),
                     )
