@@ -7,6 +7,7 @@ import 'package:routemaster/routemaster.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
+import '../../../core/common/post_card.dart';
 
 class CommunityScreen extends ConsumerWidget {
   final String name;
@@ -18,7 +19,9 @@ class CommunityScreen extends ConsumerWidget {
   }
 
   void joinCommunity(WidgetRef ref, Community community, BuildContext context) {
-    ref.read(communityControllerProvider.notifier).joinCommunity(community, context);
+    ref
+        .read(communityControllerProvider.notifier)
+        .joinCommunity(community, context);
   }
 
   @override
@@ -91,7 +94,8 @@ class CommunityScreen extends ConsumerWidget {
                                         ),
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 25)),
-                                    onPressed: () => joinCommunity(ref, community, context),
+                                    onPressed: () =>
+                                        joinCommunity(ref, community, context),
                                     child: Text(
                                         community.members.contains(user.uid)
                                             ? 'Joined'
@@ -107,7 +111,22 @@ class CommunityScreen extends ConsumerWidget {
                   )
                 ];
               },
-              body: const Text('Displaying  posts')),
+              body: ref.watch(getCommunityPostsProvider(name)).when(
+                    data: (data) {
+                      return ListView.builder(
+                          itemCount: data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final post = data[index];
+                            return PostCard(post: post);
+                          });
+                    },
+                    error: (error, stackTrace) {
+                      print(error.toString());
+                      return ErrorText(error: error.toString());
+                    },
+                    loading: () => const Loader(),
+                  )
+          ),
           error: (error, stackTrace) => ErrorText(error: error.toString()),
           loading: () => const Loader()),
     );

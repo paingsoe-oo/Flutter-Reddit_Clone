@@ -12,6 +12,7 @@ import 'package:routemaster/routemaster.dart';
 import '../../../core/failure.dart';
 import '../../../core/utils.dart';
 import '../../auth/controller/AuthController.dart';
+import '../../models/post_model.dart';
 
 final userCommunitiesProvider = StreamProvider((ref) {
   final communityController = ref.watch(communityControllerProvider.notifier);
@@ -37,6 +38,10 @@ final getCommunityByNameProvider = StreamProvider.family((ref, String name) {
 
 final searchCommunityProvider = StreamProvider.family((ref, String query) {
   return ref.watch(communityControllerProvider.notifier).searchCommunity(query);
+});
+
+final getCommunityPostsProvider = StreamProvider.family((ref, String name) {
+  return ref.read(communityControllerProvider.notifier).getCommunityPosts(name);
 });
 
 class CommunityController extends StateNotifier<bool> {
@@ -142,5 +147,9 @@ class CommunityController extends StateNotifier<bool> {
     final res = await _communityRepository.addMods(communityName, uids);
     res.fold((l) => showSnackBar(context, l.message),
         (r) => Routemaster.of(context).pop());
+  }
+
+  Stream<List<Post>> getCommunityPosts(String name) {
+    return _communityRepository.getCommunityPosts(name);
   }
 }

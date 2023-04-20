@@ -5,7 +5,9 @@ import 'package:routemaster/routemaster.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
+import '../../../core/common/post_card.dart';
 import '../../community/controller/community_controller.dart';
+import '../controller/user_profile_controller.dart';
 
 class UserProfileScreen extends ConsumerWidget {
   final String uid;
@@ -47,8 +49,7 @@ class UserProfileScreen extends ConsumerWidget {
                         ),
                         Container(
                           alignment: Alignment.bottomLeft,
-                          padding:
-                              const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: OutlinedButton(
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -97,7 +98,21 @@ class UserProfileScreen extends ConsumerWidget {
                   )
                 ];
               },
-              body: const Text('Displaying  posts')),
+              body: ref.watch(getUserPostsProvider(uid)).when(
+                    data: (data) {
+                      return ListView.builder(
+                          itemCount: data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final post = data[index];
+                            return PostCard(post: post);
+                          });
+                    },
+                    error: (error, stackTrace) {
+                      print(error.toString());
+                      return ErrorText(error: error.toString());
+                    },
+                    loading: () => const Loader(),
+                  )),
           error: (error, stackTrace) => ErrorText(error: error.toString()),
           loading: () => const Loader()),
     );

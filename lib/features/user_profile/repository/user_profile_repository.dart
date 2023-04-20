@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:reddittdemo/features/models/post_model.dart';
 import 'package:reddittdemo/features/models/user_model.dart';
 
 import '../../../core/constants/firebase_constants.dart';
@@ -15,10 +16,13 @@ final userProfileRepositoryProvider = Provider((ref) {
 class UserProfileRepository {
   final FirebaseFirestore _firestore;
 
-  UserProfileRepository({required FirebaseFirestore firestore}) : _firestore = firestore;
+  UserProfileRepository({required FirebaseFirestore firestore})
+      : _firestore = firestore;
 
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.usersCollection);
+  CollectionReference get _posts =>
+      _firestore.collection(FirebaseConstants.postsCollection);
 
   FutureVoid editCommunity(UserModel user) async {
     try {
@@ -28,5 +32,15 @@ class UserProfileRepository {
     } catch (e) {
       return left(Failure(e.toString()));
     }
+  }
+
+  Stream<List<Post>> getUserPosts(String uid) {
+    return _posts
+        .where('uid', isEqualTo: uid)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((event) => event.docs
+            .map((e) => Post.fromMap(e.data() as Map<String, dynamic>))
+            .toList());
   }
 }

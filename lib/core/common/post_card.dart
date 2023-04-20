@@ -148,7 +148,6 @@ class PostCard extends ConsumerWidget {
                                   ),
                                 ],
                               ),
-
                             ],
                           )
                         ],

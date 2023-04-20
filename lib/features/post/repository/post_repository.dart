@@ -54,4 +54,8 @@ class PostRepository {
       return left(Failure(e.toString()));
     }
   }
+
+  void upvote(Post post) async {
+
+  }
 }
