@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddittdemo/features/auth/controller/AuthController.dart';
 import 'package:reddittdemo/features/post/controller/post_controller.dart';
 import 'package:reddittdemo/theme/palette.dart';
+import 'package:routemaster/routemaster.dart';
 
 import '../../features/models/post_model.dart';
 
@@ -15,6 +16,10 @@ class PostCard extends ConsumerWidget {
 
   void deletePost(WidgetRef ref, BuildContext context) async {
     ref.read(postControllerProvider.notifier).deletePost(post, context);
+  }
+
+  void navigateToComments(BuildContext context) {
+    Routemaster.of(context).push('/post/${post.id}/comments');
   }
 
   @override
@@ -134,8 +139,7 @@ class PostCard extends ConsumerWidget {
                                       icon: const Icon(
                                         Icons.arrow_upward,
                                         size: 30,
-                                      )
-                                  ),
+                                      )),
                                   // Text('${post.upvotes.length - post.downvotes.length == 0
                                   //     ? 'Vote'
                                   //     : post.upvotes.length - post.downvotes.length}'),
@@ -144,21 +148,36 @@ class PostCard extends ConsumerWidget {
                                       icon: const Icon(
                                         Icons.arrow_downward,
                                         size: 30,
-                                      )
-                                  ),
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () => navigateToComments(context),
+                                      icon: const Icon(
+                                        Icons.comment,
+                                      )),
+                                  Text(
+                                      '${post.commentCount == 0 ? 'Comment' : post.commentCount}'),
                                 ],
                               ),
                             ],
                           )
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               )
             ],
           ),
-        )
+        ),
+        const SizedBox(height: 10,),
       ],
     );
   }
