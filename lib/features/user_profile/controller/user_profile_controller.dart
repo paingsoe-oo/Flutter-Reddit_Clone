@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +13,7 @@ import '../../../core/utils.dart';
 import '../../models/post_model.dart';
 
 final userProfileControllerProvider =
-StateNotifierProvider<UserProfileController, bool>((ref) {
+    StateNotifierProvider<UserProfileController, bool>((ref) {
   final userProfileRepository = ref.watch(userProfileRepositoryProvider);
   final storageRepository = ref.watch(storageRepositoryProvider);
 
@@ -41,6 +42,8 @@ class UserProfileController extends StateNotifier<bool> {
         super(false);
 
   void editCommunity({
+    required Uint8List? profileWebFile,
+    required Uint8List? bannerWebFile,
     required File? profileFile,
     required File? bannerFile,
     required BuildContext context,
@@ -48,17 +51,23 @@ class UserProfileController extends StateNotifier<bool> {
   }) async {
     state = true;
     UserModel user = _ref.read(userProvider)!;
-    if (profileFile != null) {
+    if (profileFile != null && profileWebFile != null) {
       final res = await _storageRepository.storeFile(
-          path: 'users/profile', id: user.uid, file: profileFile);
+          path: 'users/profile',
+          id: user.uid,
+          file: profileFile,
+          webFile: profileWebFile);
 
       res.fold((l) => showSnackBar(context, l.message),
           (r) => user = user.copyWith(profilePic: r));
     }
 
-    if (bannerFile != null) {
+    if (bannerFile != null || bannerWebFile != null) {
       final res = await _storageRepository.storeFile(
-          path: 'users/banner', id: user.uid, file: bannerFile);
+          path: 'users/banner',
+          id: user.uid,
+          file: bannerFile,
+          webFile: bannerWebFile);
 
       res.fold((l) => showSnackBar(context, l.message),
           (r) => user = user.copyWith(banner: r));
@@ -74,6 +83,6 @@ class UserProfileController extends StateNotifier<bool> {
   }
 
   Stream<List<Post>> getUserPosts(String uid) {
-      return _userProfileRepository.getUserPosts(uid);
+    return _userProfileRepository.getUserPosts(uid);
   }
 }

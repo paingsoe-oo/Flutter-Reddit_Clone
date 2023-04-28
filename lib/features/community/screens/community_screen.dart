@@ -27,6 +27,7 @@ class CommunityScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
 
     return Scaffold(
       body: ref.watch(getCommunityByNameProvider(name)).when(
@@ -73,33 +74,34 @@ class CommunityScreen extends ConsumerWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            community.mods.contains(user.uid)
-                                ? OutlinedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 25)),
-                                    onPressed: () {
-                                      navigateToModTools(context);
-                                    },
-                                    child: const Text('Mod Tools'))
-                                : OutlinedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 25)),
-                                    onPressed: () =>
-                                        joinCommunity(ref, community, context),
-                                    child: Text(
-                                        community.members.contains(user.uid)
-                                            ? 'Joined'
-                                            : 'Join')),
+                            if (!isGuest)
+                              community.mods.contains(user.uid)
+                                  ? OutlinedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 25)),
+                                      onPressed: () {
+                                        navigateToModTools(context);
+                                      },
+                                      child: const Text('Mod Tools'))
+                                  : OutlinedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 25)),
+                                      onPressed: () => joinCommunity(
+                                          ref, community, context),
+                                      child: Text(
+                                          community.members.contains(user.uid)
+                                              ? 'Joined'
+                                              : 'Join')),
                           ],
                         ),
                         Padding(
@@ -125,8 +127,7 @@ class CommunityScreen extends ConsumerWidget {
                       return ErrorText(error: error.toString());
                     },
                     loading: () => const Loader(),
-                  )
-          ),
+                  )),
           error: (error, stackTrace) => ErrorText(error: error.toString()),
           loading: () => const Loader()),
     );

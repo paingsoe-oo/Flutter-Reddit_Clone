@@ -34,9 +34,9 @@ class AuthController extends StateNotifier<bool> {
         _ref = ref,
         super(false);
 
-  void signWithGoogle(BuildContext context) async {
+  void signWithGoogle(BuildContext context, bool isFromLogin) async {
     state = true;
-    final user = await _authRepository.signInWithGoogleTwo();
+    final user = await _authRepository.signInWithGoogleTwo(isFromLogin);
     state = false;
 
     user.fold(

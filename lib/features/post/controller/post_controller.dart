@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,6 +29,11 @@ final userPostsProvider =
     StreamProvider.family((ref, List<Community> communities) {
   final postController = ref.watch(postControllerProvider.notifier);
   return postController.fetchUserPosts(communities);
+});
+
+final guestPostsProvider = StreamProvider((ref) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.fetchGuestPosts();
 });
 
 final getPostByIdProvider = StreamProvider.family((ref, String postId) {
@@ -122,12 +128,16 @@ class PostController extends StateNotifier<bool> {
       {required BuildContext context,
       required String title,
       required Community selectedCommunity,
-      required File? file}) async {
+      required File? file,
+      required Uint8List? webFile}) async {
     state = true;
     String postId = const Uuid().v1();
     final user = _ref.read(userProvider)!;
     final imageRes = await _storageRepository.storeFile(
-        path: 'posts/${selectedCommunity.name}', id: postId, file: file);
+        path: 'posts/${selectedCommunity.name}',
+        id: postId,
+        file: file,
+        webFile: webFile);
 
     imageRes.fold((l) => showSnackBar(context, l.message), (r) async {
       final Post post = Post(
@@ -162,6 +172,10 @@ class PostController extends StateNotifier<bool> {
     return Stream.value([]);
   }
 
+  Stream<List<Post>> fetchGuestPosts() {
+    return _postRepository.fetchGuestPosts();
+  }
+
   void deletePost(Post post, BuildContext context) async {
     final res = await _postRepository.deletePost(post);
     res.fold(
@@ -187,12 +201,12 @@ class PostController extends StateNotifier<bool> {
         profilePic: user.profilePic);
     final res = await _postRepository.addComment(comment);
     res.fold(
-            (l) => showSnackBar(context, l.message), (r) => null,
+      (l) => showSnackBar(context, l.message),
+      (r) => null,
     );
   }
 
   Stream<List<Comment>> fetchPostComment(String postId) {
-
-      return _postRepository.getCommentsOfPost(postId);
+    return _postRepository.getCommentsOfPost(postId);
   }
 }

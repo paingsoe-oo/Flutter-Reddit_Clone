@@ -15,6 +15,7 @@ import 'package:reddittdemo/features/user_profile/screens/user_profile_screen.da
 import 'package:routemaster/routemaster.dart';
 
 import 'features/auth/screens/login_screen.dart';
+import 'features/post/screens/add_post_screen.dart';
 
 final loggedOutRoute = RouteMap(routes: {
   '/': (_) => const MaterialPage(child: LoginScreen()),
@@ -27,41 +28,34 @@ final loggedInRoute = RouteMap(routes: {
   '/r/:name': (route) => MaterialPage(
           child: CommunityScreen(
         name: route.pathParameters['name']!,
-      )
-  ),
+      )),
   '/mod-tools/:name': (routeData) => MaterialPage(
           child: ModToolsScreen(
         name: routeData.pathParameters['name']!,
-      )
-  ),
+      )),
   '/edit-community/:name': (routeData) => MaterialPage(
           child: EditCommunityScreen(
         name: routeData.pathParameters['name']!,
-      )
-  ),
+      )),
   '/add-mods/:name': (routeData) => MaterialPage(
           child: AddModsScreen(
         name: routeData.pathParameters['name']!,
-      )
-  ),
+      )),
   '/u/:uid': (routeData) => MaterialPage(
-      child: UserProfileScreen(
+          child: UserProfileScreen(
         uid: routeData.pathParameters['uid']!,
-      )
-  ),
+      )),
   '/edit-profile/:uid': (routeData) => MaterialPage(
-      child: EditProfileScreen(
+          child: EditProfileScreen(
         uid: routeData.pathParameters['uid']!,
-      )
-  ),
+      )),
   '/add-post/:type': (routeData) => MaterialPage(
-      child: AddPostTypeScreen(
+          child: AddPostTypeScreen(
         type: routeData.pathParameters['type']!,
-      )
-  ),
+      )),
   '/post/:postId/comments': (routeData) => MaterialPage(
-      child: CommentsScreen(
+          child: CommentsScreen(
         postId: routeData.pathParameters['postId']!,
-      )
-  ),
+      )),
+  '/add-post': (routeData) => const MaterialPage(child: AddPostScreen()),
 });

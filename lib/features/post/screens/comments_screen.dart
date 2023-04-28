@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddittdemo/core/common/post_card.dart';
+import 'package:reddittdemo/features/auth/controller/AuthController.dart';
 import 'package:reddittdemo/features/post/controller/post_controller.dart';
 import 'package:reddittdemo/features/post/widgets/comment_card.dart';
+import 'package:reddittdemo/responsive/responsive.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
@@ -36,6 +38,9 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
+
     return Scaffold(
       appBar: AppBar(),
       body: ref.watch(getPostByIdProvider(widget.postId)).when(
@@ -47,15 +52,18 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                TextField(
-                  onSubmitted: (val) => addComment(data),
-                  controller: commentController,
-                  decoration: InputDecoration(
-                    hintText: 'What are your thoughts?.',
-                    filled: true,
-                    border: InputBorder.none,
+                if (!isGuest)
+                  Responsive(
+                    child: TextField(
+                      onSubmitted: (val) => addComment(data),
+                      controller: commentController,
+                      decoration:const InputDecoration(
+                        hintText: 'What are your thoughts?.',
+                        filled: true,
+                        border: InputBorder.none,
+                      ),
+                    ),
                   ),
-                ),
                 ref.watch(getPostCommentsProvider(widget.postId)).when(
                     data: (data) {
                       return Expanded(
@@ -68,7 +76,8 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                       );
                     },
                     error: (error, stackTrace) {
-                        return ErrorText(error: error.toString());},
+                      return ErrorText(error: error.toString());
+                    },
                     loading: () => const Loader()),
               ],
             );
