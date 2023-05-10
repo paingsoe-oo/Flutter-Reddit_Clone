@@ -40,7 +40,7 @@ dependencies:
   firebase_auth: ^3.11.2
   google_sign_in: ^5.4.2
   flutter_riverpod: ^2.0.2
-  fpdart: ^0.4.1
+  fpdart: ^0.4.1 #Reactive Functional
   routemaster: ^1.0.1
   dotted_border: ^2.0.0+3
   file_picker: ^5.2.6

@@ -95,6 +95,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
     final isLoading = ref.watch(postControllerProvider);
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Post ${widget.type}'),
           actions: [
