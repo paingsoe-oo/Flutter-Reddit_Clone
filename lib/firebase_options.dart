@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAfFMzN3fyeLY2YCShauKFI4nRS9UufbU0',
-    appId: '1:133503532314:android:a5045518b652cdb177c0a3',
-    messagingSenderId: '133503532314',
-    projectId: 'redddit-clone-8af08',
-    storageBucket: 'redddit-clone-8af08.appspot.com',
+    apiKey: 'you api key here',
+    appId: 'you app id here',
+    messagingSenderId: 'id here',
+    projectId: 'project-id',
+    storageBucket: 'storage bucket here',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCN0dAlpuE6WT4jBsOE1_6UsEsWV4BlovI',
-    appId: '1:133503532314:ios:3dd94d4602c49bc177c0a3',
-    messagingSenderId: '133503532314',
-    projectId: 'redddit-clone-8af08',
-    storageBucket: 'redddit-clone-8af08.appspot.com',
-    iosClientId: '133503532314-l2tp2mvpecjiac5r5dj4rhsa1trjtgl9.apps.googleusercontent.com',
-    iosBundleId: 'com.example.reddittdemo',
+    apiKey: 'api key',
+    appId: 'appId',
+    messagingSenderId: 'ID here',
+    projectId: 'project-id',
+    storageBucket: 'storage bucket',
+    iosClientId: 'ios client id here',
+    iosBundleId: 'ios bundle id here',
   );
 }

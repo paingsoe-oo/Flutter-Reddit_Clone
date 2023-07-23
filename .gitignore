@@ -45,3 +45,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Miscellaneous files
+**/packages/flutter_tools/.dart_tool/
+**/*.log
+**/pubspec.lock
+**/pubspec.yaml.*
+
+# Exclude Firebase configuration files
+**/android/app/google-services.json
+**/ios/Runner/GoogleService-Info.plist
