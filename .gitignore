@@ -53,5 +53,5 @@ app.*.map.json
 **/pubspec.yaml.*
 
 # Exclude Firebase configuration files
-**/android/app/google-services.json
-**/ios/Runner/GoogleService-Info.plist
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
