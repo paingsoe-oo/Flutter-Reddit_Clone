@@ -49,7 +49,7 @@ app.*.map.json
 # Miscellaneous files
 **/packages/flutter_tools/.dart_tool/
 **/*.log
-pubspec.lock
+**/pubspec.lock
 **/pubspec.yaml.*
 
 # Exclude Firebase configuration files
